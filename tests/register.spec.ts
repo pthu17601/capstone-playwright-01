@@ -51,7 +51,7 @@ test.describe("Register Functional Test", () => {
           'mthu@gmail.com'
         );
 
-        await expect(registerPage.getPasswordError()).toContain('ít nhất 6 ký tự');
+        await expect(registerPage.getPasswordError()).toContainText('ít nhất 6 ký tự');
     });
 
     test('Register thất bại - Nhập lại mật khẩu không khớp', async ({ page }) => {
@@ -67,7 +67,7 @@ test.describe("Register Functional Test", () => {
            'mthu@gmail.com'
         );
 
-       await expect(registerPage.getConfirmPasswordError()) .toContain('mật khẩu không khớp');
+       await expect(registerPage.getConfirmPasswordError()) .toContainText('mật khẩu không khớp');
     });
 
     test('Register thất bại - Email sai định dạng', async ({ page }) => {
@@ -83,7 +83,7 @@ test.describe("Register Functional Test", () => {
             'mthugmail.com'   //  email sai định dạng
         );
 
-        await expect(registerPage.getEmailError()) .toContain('Email không hợp lệ');
+        await expect(registerPage.getEmailError()) .toContainText('Email không hợp lệ');
     });
 
 
