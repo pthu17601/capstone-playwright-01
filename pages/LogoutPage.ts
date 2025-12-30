@@ -3,32 +3,56 @@ import { CommonPage } from "./CommonPage";
 
 export class LogoutPage extends CommonPage {
 
-    readonly btnProfile = this.page.getByRole('button', { name: 'Tài khoản' });
-    readonly btnLogout = this.page.getByRole('menuitem', { name: 'Đăng xuất' });
-    readonly lblLogoutMsg = this.page.getByRole('heading', { name: 'Đăng xuất thành công' });
+  // ===== LOCATORS =====
+  readonly btnProfile: Locator;
+  readonly btnLogout: Locator;
 
-    constructor(page: Page) {
-        super(page);
-    }
+  readonly confirmDialog: Locator;
+  readonly btnConfirmYes: Locator;
+  readonly btnConfirmCancel: Locator;
 
-    getLogoutMsgLocator(): Locator {
-        return this.lblLogoutMsg;
-    }
+  readonly lblLogoutMsg: Locator;
 
-    async clickProfile() {
-        await this.click(this.btnProfile);
-    }
+  constructor(page: Page) {
+    super(page);
 
-    async clickLogout() {
-        await this.click(this.btnLogout);
-    }
+    this.btnProfile = page.getByRole('button', { name: 'Tài khoản' });
+    this.btnLogout = page.getByRole('menuitem', { name: 'Đăng xuất' });
 
-    async logout() {
-        await this.clickProfile();
-        await this.clickLogout();
-    }
+    // Dialog xác nhận
+    this.confirmDialog = page.getByRole('dialog');
+    this.btnConfirmYes = page.getByRole('button', { name: 'Đồng ý' });
+    this.btnConfirmCancel = page.getByRole('button', { name: 'Huỷ' });
 
-    async getLogoutMessage(): Promise<string | null> {
-        return await this.getText(this.lblLogoutMsg);
+    this.lblLogoutMsg = page.getByRole('heading', { name: 'Đăng xuất thành công' });
+  }
+
+  // ===== ACTIONS =====
+  async clickProfile() {
+    if (await this.btnProfile.isVisible()) {
+      await this.click(this.btnProfile);
     }
+  }
+
+  async clickLogoutButton() {
+    await this.click(this.btnLogout);
+  }
+
+  async confirmYes() {
+    await this.click(this.btnConfirmYes);
+  }
+
+  async confirmCancel() {
+    await this.click(this.btnConfirmCancel);
+  }
+
+  async logout() {
+    await this.clickProfile();
+    await this.clickLogoutButton();
+  }
+
+  // ===== ASSERT =====
+  async getLogoutMessage(): Promise<string | null> {
+    return await this.getText(this.lblLogoutMsg);
+  }
 }

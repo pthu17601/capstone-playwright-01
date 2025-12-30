@@ -3,62 +3,79 @@ import { CommonPage } from "./CommonPage";
 
 export class RegisterPage extends CommonPage {
 
-    
-    readonly lnkRegister = this.page.getByRole('link', { name: 'Đăng ký' });
-    readonly txtAccount = this.page.getByRole('textbox', { name: 'Tài khoản' });
-    readonly txtPassword = this.page.getByRole('textbox', { name: 'Mật khẩu', exact:true });
-    readonly txtConfirmPassword = this.page.getByRole('textbox', { name: 'Nhập lại mật khẩu' });
-    readonly txtFullName = this.page.getByRole('textbox', { name: 'Họ và tên' });
-    readonly txtEmail = this.page.getByRole('textbox', { name: 'Email' });
-    readonly btnRegister = this.page.getByRole('button', { name: 'Đăng ký' });
+  
+  readonly lnkRegister: Locator;
+  readonly txtAccount: Locator;
+  readonly txtPassword: Locator;
+  readonly txtConfirmPassword: Locator;
+  readonly txtFullName: Locator;
+  readonly txtEmail: Locator;
+  readonly btnRegister: Locator;
 
-    readonly lblRegisterSuccess = this.page.getByText('Đăng ký thành công');
 
-    
+  readonly lblRegisterSuccess: Locator;
+
+  
+  readonly lblUsernameError: Locator;
+  readonly lblPasswordError: Locator;
+  readonly lblConfirmPasswordError: Locator;
+  readonly lblEmailError: Locator;
+
     constructor(page: Page) {
         super(page);
-    }
+
+        this.lnkRegister = page.getByRole('link', { name: 'Đăng ký' });
+        this.txtAccount = page.getByRole('textbox', { name: 'Tài khoản' });
+        this.txtPassword = page.getByRole('textbox', { name: 'Mật khẩu', exact: true });
+        this.txtConfirmPassword = page.getByRole('textbox', { name: 'Nhập lại mật khẩu' });
+        this.txtFullName = page.getByRole('textbox', { name: 'Họ và tên' });
+        this.txtEmail = page.getByRole('textbox', { name: 'Email' });
+
+        this.btnRegister = page.getByRole('button', { name: 'Đăng ký' });
+
+        this.lblRegisterSuccess = page.getByText('Đăng ký thành công');
 
     
+        this.lblUsernameError = page.locator('#account-error');
+        this.lblPasswordError = page.locator('#password-error');
+        this.lblConfirmPasswordError = page.locator('#confirmPassword-error');
+        this.lblEmailError = page.locator('#email-error');
+    }
+
+  
     async openRegisterPage() {
         await this.click(this.lnkRegister);
     }
 
-    async enterAccount(value: string) {
-        await this.fill(this.txtAccount, value);
-    }
-
-    async enterPassword(value: string) {
-        await this.fill(this.txtPassword, value);
-    }
-
-    async enterConfirmPassword(value: string) {
-        await this.fill(this.txtConfirmPassword, value);
-    }
-
-    async enterFullName(value: string) {
-        await this.fill(this.txtFullName, value);
-    }
-
-    async enterEmail(value: string) {
-        await this.fill(this.txtEmail, value);
-    }
-
-    async clickRegister() {
+    async register(account: string,password: string,confirmPassword: string,fullName: string,email: string) {
+        await this.openRegisterPage();
+        await this.fill(this.txtAccount, account);
+        await this.fill(this.txtPassword, password);
+        await this.fill(this.txtConfirmPassword, confirmPassword);
+        await this.fill(this.txtFullName, fullName);
+        await this.fill(this.txtEmail, email);
         await this.click(this.btnRegister);
     }
 
-    async register(account: string, password: string, fullName: string, email: string, p0: string) {
-        await this.openRegisterPage();
-        await this.enterAccount(account);
-        await this.enterPassword(password);
-        await this.enterConfirmPassword(password);
-        await this.enterFullName(fullName);
-        await this.enterEmail(email);
-        await this.clickRegister();
-    }
-
+  
     async getRegisterSuccessMessage(): Promise<string | null> {
         return await this.getText(this.lblRegisterSuccess);
     }
-}
+
+ 
+    getUsernameError() {
+        return this.lblUsernameError;
+    }
+
+    getPasswordError() {
+        return this.lblPasswordError;
+    }
+
+    getConfirmPasswordError() {
+        return this.lblConfirmPasswordError;
+    }
+
+    getEmailError() {
+        return this.lblEmailError;
+    }
+};
