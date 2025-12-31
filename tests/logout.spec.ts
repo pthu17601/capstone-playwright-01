@@ -47,7 +47,7 @@ test.describe("Logout Functional Test", () => {
   });
 
   test("Đăng xuất không thành công - Nhấn 'Huỷ' nhưng bị đăng xuất ", async ({ page }) => {
-        const loginPage = new LoginPage(page);
+    const loginPage = new LoginPage(page);
     const logoutPage = new LogoutPage(page);
 
     await loginPage.login('mthu', 'mthuuu');
